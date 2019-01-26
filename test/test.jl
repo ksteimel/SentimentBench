@@ -7,7 +7,7 @@ include("../benchmark.jl")
   @test length(input) == length(output)
   @test sort(output) == sort(input)
   input2 = [1938,283,1902,110,1,10]
-  @test_throws ErrorException output1, output2 = shuffle(input, input2)
+  @test_throws MethodError output1, output2 = shuffle(input, input2)
   input2 = [1938, 283, 1902, 110, 1]
   output1, output2 = shuffle(input, input2)
   @test sort(output1) == sort(input)
