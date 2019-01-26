@@ -1,0 +1,15 @@
+kind: pipeline
+name: julia-latest
+clone:
+  git:
+    image: envelopecity/drone-git-lfs
+    
+steps:
+- name: julia-process
+  image: ksteimel/julia-mutual-info-process:v1.0
+  commands:
+  - julia test/test.jl
+  when:
+    event:
+    - pull_request
+    - push
