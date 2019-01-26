@@ -24,7 +24,7 @@ function read_movie_dataset(file_path::String)
         end
     end
     neg_labels = repeat([0], length(neg_data))
-    pos_labels = repeat([1], legnth(pos_data))
+    pos_labels = repeat([1], length(pos_data))
     labels = vcat(neg_labels, pos_labels)
     data = vcat(neg_data, pos_data)
     return data, labels
@@ -70,7 +70,26 @@ function sentiment_score(data::Array)
     res = [sentiment >= 0.5 ? 1 : 0 for sentiment in sentiments]
     return res
 end
-function main()
-    data, labels = read_movie_dataset("aclImdb/test/")
-    data, labels = shuffle_data()
+"""
+Calculate the accuracy of the algorithm
+"""
+function accuracy(y, labels)
+    if length(y) != length(labels)
+        error("Length of labels and predicted values do not match")
+    end
+    match_count = sum([y[i] == labels[i] ? 1 : 0 for i=1:length(labels)])
+    return Float64(match_count)/length(y)
 end
+function main()
+    println("Reading in datasets")
+    data, labels = read_movie_dataset("aclImdb/train/")
+    println("Shuffling data...")
+    data, labels = shuffle_data(data, labels)
+    println("Scoring sentiment")
+    y = sentiment_score(data)
+    println("Computing Accuracy")
+    acc = accuracy(y, labels)
+    println(acc)
+
+end
+main()
