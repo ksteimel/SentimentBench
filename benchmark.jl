@@ -92,4 +92,3 @@ function main()
     println(acc)
 
 end
-main()
