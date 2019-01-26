@@ -13,8 +13,6 @@ RUN set -eux; \
     ; \
     rm -rf /var/lib/apt/lists/*
 
-RUN julia -O3 -e 'using Pkg;Pkg.REPLMode.pkgstr("add Distributed   ;precompile");using Distributed'
-RUN julia -O3 -e 'using Pkg;Pkg.REPLMode.pkgstr("add DataStructures;precompile");using DataStructures'
-RUN julia -O3 -e 'using Pkg;Pkg.REPLMode.pkgstr("add SparseArrays ;precompile");using SparseArrays'
+RUN julia -O3 -e 'using Pkg;Pkg.REPLMode.pkgstr("add TextAnalysis   ;precompile");using TextAnalysis'
 
 WORKDIR /projects
