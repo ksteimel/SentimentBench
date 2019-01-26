@@ -6,7 +6,7 @@ clone:
     
 steps:
 - name: julia-process
-  image: ksteimel/julia-mutual-info-process:v1.0
+  image: ksteimel/text-analysis:latest
   commands:
   - julia test/test.jl
   when:
