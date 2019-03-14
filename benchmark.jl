@@ -32,7 +32,7 @@ function read_movie_dataset(file_path::String)
     #        push!(pos_data, text)
     #    end
     #end
-    
+
     neg_labels = repeat([0], length(neg_data))
     pos_labels = repeat([1], length(pos_data))
     labels = vcat(neg_labels, pos_labels)
@@ -76,7 +76,8 @@ function sentiment_score(data::Array)
     sentiments = Float64[]
     for document in data
         toked_document = TokenDocument(text(document))
-        toked_document.tokens = [ token for token in toked_document.tokens 
+        # This next line has to be done as the word embeddings are only 5000 long
+        toked_document.tokens = [ token for token in toked_document.tokens
                                   if token in keys(model.model.words) && model.model.words[token] < 5000]
         try
             push!(sentiments, model(toked_document))
@@ -129,6 +130,6 @@ function main()
     end
     new_acc = accuracy(y_filtered, labels_filtered)
     println(new_acc)
-    
+
 end
 main()
