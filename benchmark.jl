@@ -18,6 +18,8 @@ function read_movie_dataset(file_path::String)
     prepare!(pos_data, strip_case)
     prepare!(neg_data, strip_punctuation)
     prepare!(pos_data, strip_punctuation)
+    prepare!(pos_data, strip_stopwords)
+    prepare!(neg_data, strip_stopwords)
     #for (root, dirs, files) in walkdir(file_path * "/neg")
     #    for file in files
     #        text = StringDocument(readlines(joinpath(root, file)))
@@ -99,10 +101,13 @@ function accuracy(y, labels)
     match_count = sum([y[i] == labels[i] ? 1 : 0 for i=1:length(labels)])
     return Float64(match_count)/length(y)
 end
-function write_predictions(y, file_path)
+function write_predictions(sentiments, preds, labels, file_path)
     out_fp = open(file_path, "w")
-    for prediction in y
-        write(out_fp, string(prediction) * "\n")
+    for i in eachindex(sentiments)
+        pred = preds[i]
+        sentiment = sentiments[i]
+        label = labels[i]
+        write(out_fp, string(pred) * "\t" * string(sentiment) * "\t" * string(label) * "\n")
     end
 end
 function main()
@@ -114,7 +119,7 @@ function main()
     y, sentiments = sentiment_score(data)
     println("Computing Accuracy")
     acc = accuracy(y, labels)
-    write_predictions(sentiments, "predictions.txt")
+    write_predictions(sentiments, y, labels, "predictions.txt")
     println(acc)
     y_filtered = []
     labels_filtered = []
