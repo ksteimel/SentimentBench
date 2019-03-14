@@ -8,7 +8,8 @@ steps:
 - name: julia-process
   image: ksteimel/text-analysis:latest
   commands:
-  - julia test/test.jl
+    - bash getCorpora.sh
+    - julia test/test.jl
   when:
     event:
     - pull_request
