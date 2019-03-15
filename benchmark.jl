@@ -111,6 +111,9 @@ function write_predictions(sentiments, preds, labels, file_path)
         write(out_fp, string(pred) * "\t" * string(sentiment) * "\t" * string(label) * "\n")
     end
 end
+function create_new_model(data::Array, labels::Array)
+
+end
 function main()
     println("Reading in datasets")
     data, labels = read_movie_dataset("aclImdb/test/")
@@ -124,9 +127,11 @@ function main()
     println(acc)
     y_filtered = []
     labels_filtered = []
-    for i in eachindex(y)
-        push!(y_filtered, y[i])
-        push!(labels_filtered, labels[i])
+    for i in eachindex(sentiments)
+    	if sentiments[i] == .5
+            push!(y_filtered, y[i])
+            push!(labels_filtered, labels[i])
+	end
     end
     new_acc = accuracy(y_filtered, labels_filtered)
     println(new_acc)
